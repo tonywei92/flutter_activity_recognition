@@ -1,0 +1,14 @@
+name: activity_recognition
+description: Activity recogiontion plugin for Android and iOS
+version: 0.0.1
+author: Daniel Morawetz <development@resi-verbindet.at>
+homepage: https://github.com/Morosko/flutter_activity_recognition
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  plugin:
+    androidPackage: at.resiverbindet.activityrecognition
+    pluginClass: ActivityRecognitionPlugin
