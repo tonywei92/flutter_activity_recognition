@@ -16,15 +16,10 @@ part 'package:activity_recognition/channel/helper.dart';
 part 'package:activity_recognition/data/activity_result.dart';
 
 class ActivityRecognition {
-  /// Requests the current [Activity].
-  static Future<ActivityResult> currentActivity() =>
-      _activityChannel.currentActivity();
-
   /// Requests continuous [Activity] updates.
-  static Stream<Activity> activityUpdates() {
-    _activityChannel.startActivityUpdates();
-    return _activityChannel.activityUpdates;
-  }
+  ///
+  /// The Stream will output the *most probable* [Activity].
+  static Stream<Activity> activityUpdates() => _activityChannel.activityUpdates;
 
   static final _activityChannel = _ActivityChannel();
 }

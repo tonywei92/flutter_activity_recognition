@@ -6,25 +6,26 @@
 part of activity_recognition;
 
 class _ActivityChannel {
-  Future<ActivityResult> currentActivity() {}
-
-  //Stream<ActivityResult> activityUpdates() {}
-
   StreamController<Activity> _activityStreamController =
       StreamController<Activity>();
   StreamSubscription _activityUpdateStreamSubscription;
 
   Stream<Activity> get activityUpdates => _activityStreamController.stream;
 
+  _ActivityChannel() {
+    _activityStreamController.onListen = startActivityUpdates();
+  }
+
   startActivityUpdates() {
     debugPrint("startActivityUpdates()");
-    if (_activityUpdateStreamSubscription == null) {
-      _activityUpdateStreamSubscription = _eventChannel
-          .receiveBroadcastStream()
-          .listen(_onActivityUpdateReceived);
 
-      _channel.invokeMethod('startActivityUpdates');
-    }
+    if (_activityUpdateStreamSubscription != null) return;
+
+    _activityUpdateStreamSubscription = _eventChannel
+        .receiveBroadcastStream()
+        .listen(_onActivityUpdateReceived);
+
+    _channel.invokeMethod('startActivityUpdates');
   }
 
   endActivityUpdates() {
