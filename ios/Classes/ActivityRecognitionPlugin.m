@@ -3,6 +3,10 @@
 
 @implementation ActivityRecognitionPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftActivityRecognitionPlugin registerWithRegistrar:registrar];
+    if (@available(iOS 9.0, *)) {
+        [SwiftActivityRecognitionPlugin registerWithRegistrar:registrar];
+    } else {
+        // Fallback on earlier versions
+    }
 }
 @end

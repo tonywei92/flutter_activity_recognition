@@ -1,14 +1,32 @@
 import Flutter
 import UIKit
-    
-public class SwiftActivityRecognitionPlugin: NSObject, FlutterPlugin {
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "activity_recognition", binaryMessenger: registrar.messenger())
-    let instance = SwiftActivityRecognitionPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-  }
 
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
-  }
+@available(iOS 9.0, *)
+public class SwiftActivityRecognitionPlugin: NSObject, FlutterPlugin {
+    internal let registrar: FlutterPluginRegistrar
+    private let activityClient = ActivityClient()
+    private let activityChannel: ActivityChannel
+    
+    init(registrar: FlutterPluginRegistrar) {
+        self.registrar = registrar
+        self.activityChannel = ActivityChannel(activityClient: activityClient)
+        super.init()
+        
+        //registrar.addApplicationDelegate(self)
+        activityChannel.register(on: self)
+    }
+    
+    public static func register(with registrar: FlutterPluginRegistrar) {
+        _ = SwiftActivityRecognitionPlugin(registrar: registrar)
+    }
+    
+    // UIApplicationDelegate
+    /*
+    public func applicationDidBecomeActive(_ application: UIApplication) {
+        activityClient.resume()
+    }
+    
+    public func applicationWillResignActive(_ application: UIApplication) {
+        activityClient.pause()
+    }*/
 }

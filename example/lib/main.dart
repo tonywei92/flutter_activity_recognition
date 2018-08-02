@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Activity act = snapshot.data;
-                return Text("You phone is to ${act.confidence}% ${act.type}!");
+                return Text("Your phone is to ${act.confidence}% ${act.type}!");
               }
 
               return Text("No activity detected.");
