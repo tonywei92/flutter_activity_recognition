@@ -1,6 +1,8 @@
 # activity_recognition
 
-Activity recogiontion plugin for Android and iOS.
+[![pub package](https://img.shields.io/pub/v/activity_recognition.svg)](https://pub.dartlang.org/packages/activity_recognition)
+
+Activity recognition plugin for Android and iOS.
 
 ## Getting Started
 

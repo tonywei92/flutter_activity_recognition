@@ -12,7 +12,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 part 'package:activity_recognition/channel/activity_channel.dart';
-part 'package:activity_recognition/channel/helper.dart';
 part 'package:activity_recognition/data/activity_result.dart';
 
 class ActivityRecognition {

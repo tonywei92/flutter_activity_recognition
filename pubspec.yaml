@@ -1,6 +1,7 @@
 name: activity_recognition
-description: Activity recogiontion plugin for Android and iOS
-version: 0.0.1
+description: Activity recognition plugin for Android and iOS using the native APIs
+  - ActivityRecognitionClient on Android, CoreMotion on iOS.
+version: 0.0.2
 author: Daniel Morawetz <development@resi-verbindet.at>
 homepage: https://github.com/Morosko/flutter_activity_recognition
 
@@ -8,8 +9,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
 environment:
-    sdk: ">=1.19.0 <2.0.0"
+    sdk: ">=2.0.0-dev.28.0 <3.0.0"
 
 flutter:
   plugin:
