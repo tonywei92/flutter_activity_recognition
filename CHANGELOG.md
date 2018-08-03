@@ -1,3 +1,7 @@
+## 0.1.0
+
+* Unify platform code
+
 ## 0.0.2
 
 * Fix stuff for pub.dartlang.org

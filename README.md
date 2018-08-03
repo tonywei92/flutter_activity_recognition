@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/activity_recognition.svg)](https://pub.dartlang.org/packages/activity_recognition)
 
-Activity recognition plugin for Android and iOS.
+Activity recognition plugin for Android and iOS. Only working while App is running (= not terminated by the user or OS).
 
 ## Getting Started
 
