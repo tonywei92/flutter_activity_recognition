@@ -23,48 +23,48 @@ class ActivityClient(private val activity: Activity) :
 
     private val activityRecognitionClient = ActivityRecognition.getClient(activity)
     private var activityUpdatesCallback: ((String) -> Unit)? = null
-    //private var lastActivity: String? = null
 
     private var isPaused = true
 
     private val TAG = "ActivityClient"
 
     fun resume() {
-        Log.d(TAG, "resume: start")
-        Log.d(TAG, "resume: isPaused: $isPaused")
         if (!isPaused) return
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Log.d(TAG, "resume: getDefaultSharedPreferences: ${PreferenceManager.getDefaultSharedPreferencesName(activity.applicationContext)}")
-        }
-        val preferences = PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
-
-        preferences.edit().clear().apply()
-        preferences.registerOnSharedPreferenceChangeListener(this)
-        isPaused = false
-
-        Log.d(TAG, "resume: requestActivityUpdates")
+        registerSharedPreferenceChangeListener()
         requestActivityUpdates()
+
+        isPaused = false
     }
 
     fun pause() {
         if (isPaused) return
 
-        val preferences =
-            activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
-        preferences.unregisterOnSharedPreferenceChangeListener(this)
-
+        unregisterSharedPreferenceChangeListener()
         removeActivityUpdates()
+
+        isPaused = true
     }
 
     fun registerActivityUpdateCallback(callback: (String) -> Unit) {
-        //check(activityUpdatesCallback == null, { "trying to register a 2nd location updates callback" })
         activityUpdatesCallback = callback
     }
 
     fun deregisterLocationUpdatesCallback() {
-        //check(activityUpdatesCallback != null, { "trying to deregister a non-existent location updates callback" })
         activityUpdatesCallback = null
+    }
+
+    private fun registerSharedPreferenceChangeListener() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+
+        preferences.edit().clear().apply() // Clear, so we get the first update
+        preferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun unregisterSharedPreferenceChangeListener() {
+        val preferences =
+                activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
+        preferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     @SuppressLint("MissingPermission")
@@ -74,42 +74,6 @@ class ActivityClient(private val activity: Activity) :
             Constants.DETECTION_INTERVAL_IN_MILLISECONDS,
             getActivityDetectionPendingIntent()
         )
-/*
-        val transitions = ArrayList<ActivityTransition>()
-
-        transitions.add(
-            ActivityTransition.Builder()
-                .setActivityType(DetectedActivity.STILL)
-                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                .build()
-        )
-
-        transitions.add(
-            ActivityTransition.Builder()
-                .setActivityType(DetectedActivity.STILL)
-                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                .build()
-        )
-
-        transitions.add(
-            ActivityTransition.Builder()
-                .setActivityType(DetectedActivity.WALKING)
-                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                .build()
-        )
-
-        transitions.add(
-            ActivityTransition.Builder()
-                .setActivityType(DetectedActivity.WALKING)
-                .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                .build()
-        )
-
-
-        val task = activityRecognitionClient.requestActivityTransitionUpdates(
-            ActivityTransitionRequest(transitions),
-            getActivityDetectionPendingIntent()
-        )*/
 
         task.addOnSuccessListener {
             Log.d(TAG, "requestActivityUpdates: Activity Updates enabled successfully!")
@@ -127,11 +91,11 @@ class ActivityClient(private val activity: Activity) :
         )
 
         task.addOnSuccessListener {
-            Log.d(TAG, "requestActivityUpdates: Activity Updates enabled successfully!")
+            Log.d(TAG, "requestActivityUpdates: Activity Updates removed successfully!")
         }
 
         task.addOnFailureListener {
-            Log.d(TAG, "requestActivityUpdates: Failed to enable Activity updates: " + it.message)
+            Log.d(TAG, "requestActivityUpdates: Failed to remove Activity updates: " + it.message)
         }
     }
 
@@ -146,12 +110,9 @@ class ActivityClient(private val activity: Activity) :
 
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Log.d(TAG, "onSharedPreferenceChanged: start")
         if (key == Constants.KEY_DETECTED_ACTIVITIES) {
-            Log.d(TAG, "onSharedPreferenceChanged: correct key")
             val result = sharedPreferences
                 .getString(Constants.KEY_DETECTED_ACTIVITIES, "")
-            Log.d(TAG, "onSharedPreferenceChanged: result: $result")
             activityUpdatesCallback?.invoke(result)
         }
     }

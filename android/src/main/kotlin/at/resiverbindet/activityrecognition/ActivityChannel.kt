@@ -14,8 +14,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
 class ActivityChannel(private val activityClient: ActivityClient) :
-    MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
-
+        MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
 
     fun register(plugin: ActivityRecognitionPlugin) {
         val methodChannel = MethodChannel(plugin.registrar.messenger(), "activity_recognition/activities")
@@ -25,9 +24,12 @@ class ActivityChannel(private val activityClient: ActivityClient) :
         eventChannel.setStreamHandler(this)
     }
 
-    private fun currentActivity(result: MethodChannel.Result) {
-        launch(UI) {
+    // MethodChannel.MethodCallHandler
 
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        when (call.method) {
+            "startActivityUpdates" -> startActivityUpdates(result)
+            else -> result.notImplemented()
         }
     }
 
@@ -36,27 +38,15 @@ class ActivityChannel(private val activityClient: ActivityClient) :
         result.success(true)
     }
 
-    // MethodChannel.MethodCallHandler
-
-    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        when (call.method) {
-            "currentActivity" -> currentActivity(result)
-            "startActivityUpdates" -> startActivityUpdates(result)
-            else -> result.notImplemented()
-        }
-    }
-
     // EventChannel.StreamHandler
 
     override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
-        Log.d("event", "onListen: start")
         activityClient.registerActivityUpdateCallback { result ->
-            Log.d("event", "onListen: $result")
             events.success(result)
         }
     }
 
     override fun onCancel(p0: Any?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activityClient.deregisterLocationUpdatesCallback()
     }
 }

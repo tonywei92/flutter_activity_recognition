@@ -27,7 +27,6 @@ class Codec {
             }
         }
 
-
         fun encodeResult(result: List<DetectedActivity>): String {
             val builder = StringBuilder()
             builder.append("[")

@@ -20,7 +20,6 @@ class ActivityRecognizedService(name: String = "ActivityRecognizedService") : In
     val TAG = "ActivityRecognizedServi"
 
     override fun onHandleIntent(intent: Intent) {
-        Log.d(TAG, "onHandleIntent: received activity")
         val result = ActivityRecognitionResult.extractResult(intent)
 
         // Get the list of the probable activities associated with the current state of the
@@ -30,22 +29,14 @@ class ActivityRecognizedService(name: String = "ActivityRecognizedService") : In
 
 
         val mostProbableActivity = detectedActivities.maxBy { it.confidence }
-        Log.d(TAG, "onHandleIntent: mostProbableActivity: $mostProbableActivity")
-        Log.d(TAG, "onHandleIntent: processname: ${applicationContext.applicationInfo.processName}")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Log.d(TAG, "resume: getDefaultSharedPreferences: ${PreferenceManager.getDefaultSharedPreferencesName(applicationContext)}")
-        }
 
         val preferences =
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        //PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val persist = preferences.edit()
+        preferences.edit()
             .putString(
                 Constants.KEY_DETECTED_ACTIVITIES,
                 Codec.encodeResult(listOf(mostProbableActivity!!))
             )
-            .commit()
-        Log.d(TAG, "onHandleIntent: perstited: $persist")
+            .apply()
     }
 }

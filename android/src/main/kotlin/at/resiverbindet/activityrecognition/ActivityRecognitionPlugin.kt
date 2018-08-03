@@ -18,7 +18,7 @@ class ActivityRecognitionPlugin(val registrar: Registrar) {
             }
 
             override fun onActivityResumed(activity: Activity?) {
-                //activityClient.resume()
+                activityClient.resume()
             }
 
             override fun onActivityStarted(activity: Activity?) {
