@@ -12,21 +12,10 @@ public class SwiftActivityRecognitionPlugin: NSObject, FlutterPlugin {
         self.activityChannel = ActivityChannel(activityClient: activityClient)
         super.init()
         
-        //registrar.addApplicationDelegate(self)
         activityChannel.register(on: self)
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         _ = SwiftActivityRecognitionPlugin(registrar: registrar)
     }
-    
-    // UIApplicationDelegate
-    /*
-    public func applicationDidBecomeActive(_ application: UIApplication) {
-        activityClient.resume()
-    }
-    
-    public func applicationWillResignActive(_ application: UIApplication) {
-        activityClient.pause()
-    }*/
 }

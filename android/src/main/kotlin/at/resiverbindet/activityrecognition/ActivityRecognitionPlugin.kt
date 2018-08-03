@@ -12,35 +12,6 @@ class ActivityRecognitionPlugin(val registrar: Registrar) {
     private val activityChannel = ActivityChannel(activityClient)
 
     init {
-        registrar.activity().application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks{
-            override fun onActivityPaused(activity: Activity?) {
-                activityClient.pause()
-            }
-
-            override fun onActivityResumed(activity: Activity?) {
-                activityClient.resume()
-            }
-
-            override fun onActivityStarted(activity: Activity?) {
-            }
-
-            override fun onActivityDestroyed(activity: Activity?) {
-
-            }
-
-            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-
-            }
-
-            override fun onActivityStopped(activity: Activity?) {
-
-            }
-
-            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-
-            }
-        })
-
         activityChannel.register(this)
     }
 

@@ -2,7 +2,7 @@
 //  Activity.swift
 //  activity_recognition
 //
-//  Created by RESI Relate People on 02.08.18.
+//  Created by Daniel Morawetz on 02.08.18.
 //
 
 import Foundation
@@ -35,12 +35,7 @@ class Activity: Codable {
             self.confidence = 50
         case CMMotionActivityConfidence.high:
             self.confidence = 100
-        default:
-            self.confidence = 0
         }
     }
-    
-    func toJson() -> String {
-        return "[{\"type\":\"\(type)\", \"confidence\":\(confidence)}]"
-    }
+
 }

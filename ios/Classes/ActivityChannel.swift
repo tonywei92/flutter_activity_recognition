@@ -2,7 +2,7 @@
 //  ActivityClient.swift
 //  activity_recognition
 //
-//  Created by RESI Relate People on 02.08.18.
+//  Created by Daniel Morawetz on 02.08.18.
 //
 
 import Foundation
@@ -27,7 +27,6 @@ class ActivityChannel {
     }
     
     private func handleMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        print("handleMethodCall")
         switch call.method {
         case "startActivityUpdates":
             startActivityUpdates()
@@ -49,7 +48,7 @@ class ActivityChannel {
         
         public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
             activityClient.registerActivityUpdates { result in
-                events(result.data!.toJson())
+                events(Codec.encodeResult(activity: result.data!))
             }
             return nil
         }

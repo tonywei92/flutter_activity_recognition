@@ -27,16 +27,12 @@ class Codec {
             }
         }
 
-        fun encodeResult(result: List<DetectedActivity>): String {
+        fun encodeResult(result: DetectedActivity): String {
             val builder = StringBuilder()
-            builder.append("[")
-            for (r in result) {
-                builder.append("{")
-                builder.append("\"type\":\"" + getActivityString(r.type) + "\",")
-                builder.append("\"confidence\":" + r.confidence.toString())
-                builder.append("}")
-            }
-            builder.append("]")
+            builder.append("{")
+            builder.append("\"type\":\"" + getActivityString(result.type) + "\",")
+            builder.append("\"confidence\":" + result.confidence.toString())
+            builder.append("}")
             return builder.toString()
         }
     }

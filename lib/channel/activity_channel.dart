@@ -17,8 +17,6 @@ class _ActivityChannel {
   }
 
   startActivityUpdates() {
-    debugPrint("startActivityUpdates()");
-
     if (_activityUpdateStreamSubscription != null) return;
 
     _activityUpdateStreamSubscription = _eventChannel

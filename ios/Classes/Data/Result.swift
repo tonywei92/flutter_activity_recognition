@@ -2,7 +2,7 @@
 //  Result.swift
 //  activity_recognition
 //
-//  Created by RESI Relate People on 02.08.18.
+//  Created by Daniel Morawetz on 02.08.18.
 //
 
 import Foundation

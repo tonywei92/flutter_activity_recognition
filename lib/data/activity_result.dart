@@ -11,8 +11,7 @@ class Activity {
 
   Activity(this.type, this.confidence);
 
-  factory Activity.fromJson(List<dynamic> json) {
-    var act = json[0];
+  factory Activity.fromJson(Map<String, dynamic> act) {
     return Activity(act['type'], act['confidence']);
   }
 }
