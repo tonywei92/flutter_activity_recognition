@@ -11,9 +11,11 @@ class Activity {
 
   Activity(this.type, this.confidence);
 
+  factory Activity.empty() {
+    return Activity("UNKNOWN", 100);
+  }
+
   factory Activity.fromJson(Map<String, dynamic> act) {
     return Activity(act['type'], act['confidence']);
   }
 }
-
-class ActivityResult {}

@@ -19,7 +19,7 @@ import com.google.android.gms.location.ActivityRecognition
 
 
 class ActivityClient(private val activity: Activity) :
-    SharedPreferences.OnSharedPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val activityRecognitionClient = ActivityRecognition.getClient(activity)
     private var activityUpdatesCallback: ((String) -> Unit)? = null
@@ -55,9 +55,9 @@ class ActivityClient(private val activity: Activity) :
     }
 
     private fun registerSharedPreferenceChangeListener() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+        val preferences =
+                activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
 
-        preferences.edit().clear().apply() // Clear, so we get the first update
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -71,8 +71,8 @@ class ActivityClient(private val activity: Activity) :
     private fun requestActivityUpdates() {
         Log.d(TAG, "requestActivityUpdates: start")
         val task = activityRecognitionClient.requestActivityUpdates(
-            Constants.DETECTION_INTERVAL_IN_MILLISECONDS,
-            getActivityDetectionPendingIntent()
+                Constants.DETECTION_INTERVAL_IN_MILLISECONDS,
+                getActivityDetectionPendingIntent()
         )
 
         task.addOnSuccessListener {
@@ -87,7 +87,7 @@ class ActivityClient(private val activity: Activity) :
     @SuppressLint("MissingPermission")
     private fun removeActivityUpdates() {
         val task = activityRecognitionClient.removeActivityUpdates(
-            getActivityDetectionPendingIntent()
+                getActivityDetectionPendingIntent()
         )
 
         task.addOnSuccessListener {
@@ -112,7 +112,7 @@ class ActivityClient(private val activity: Activity) :
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == Constants.KEY_DETECTED_ACTIVITIES) {
             val result = sharedPreferences
-                .getString(Constants.KEY_DETECTED_ACTIVITIES, "")
+                    .getString(Constants.KEY_DETECTED_ACTIVITIES, "")
             activityUpdatesCallback?.invoke(result)
         }
     }

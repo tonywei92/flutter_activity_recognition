@@ -19,6 +19,6 @@ class Constants {
          * detections while improving battery life. A value of 0 results in activity detections at the
          * fastest possible rate.
          */
-        const val DETECTION_INTERVAL_IN_MILLISECONDS: Long = 5 * 1000 // 30 seconds
+        const val DETECTION_INTERVAL_IN_MILLISECONDS: Long = 30 * 1000 // 30 seconds
     }
 }

@@ -1,3 +1,10 @@
+## 0.1.2
+
+* Always clear shared preferences to trigger changed event
+* Use named shared preferences to not interfere with the application itself
+* Set the interval to 30 seconds
+* Add Activity.empty()
+
 ## 0.1.0
 
 * Unify platform code

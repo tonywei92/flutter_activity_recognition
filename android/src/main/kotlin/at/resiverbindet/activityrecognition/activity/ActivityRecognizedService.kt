@@ -32,12 +32,12 @@ class ActivityRecognizedService(name: String = "ActivityRecognizedService") : In
         val mostProbableActivity = detectedActivities.maxBy { it.confidence }
 
         val preferences =
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        preferences.edit()
-            .putString(
-                Constants.KEY_DETECTED_ACTIVITIES,
-                Codec.encodeResult(mostProbableActivity!!)
-            )
-            .apply()
+                activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
+        preferences.edit().clear()
+                .putString(
+                        Constants.KEY_DETECTED_ACTIVITIES,
+                        Codec.encodeResult(mostProbableActivity!!)
+                )
+                .apply()
     }
 }
