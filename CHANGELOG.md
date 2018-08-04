@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Fix copy & paste bug
+
 ## 0.1.2
 
 * Always clear shared preferences to trigger changed event
