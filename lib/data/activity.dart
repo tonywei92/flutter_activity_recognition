@@ -18,4 +18,14 @@ class Activity {
   factory Activity.fromJson(Map<String, dynamic> act) {
     return Activity(act['type'], act['confidence']);
   }
+
+  Map<String, dynamic> toJson() => {
+        'type': type,
+        'confidence': confidence,
+      };
+
+  @override
+  String toString() {
+    return "Activity (type: $type, confidence: $confidence)";
+  }
 }

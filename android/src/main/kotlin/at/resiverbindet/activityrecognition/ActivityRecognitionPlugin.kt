@@ -1,14 +1,14 @@
 package at.resiverbindet.activityrecognition
 
-import android.app.Activity
-import android.app.Application
-import android.os.Bundle
 import at.resiverbindet.activityrecognition.activity.ActivityClient
+import at.resiverbindet.activityrecognition.activity.ActivityRecognizedService
+import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import io.flutter.view.FlutterNativeView
 
-class ActivityRecognitionPlugin(val registrar: Registrar) {
+class ActivityRecognitionPlugin(val registrar: Registrar): PluginRegistry.ViewDestroyListener {
 
-    private val activityClient = ActivityClient(registrar.activity())
+    private val activityClient = ActivityClient(registrar.context())
     private val activityChannel = ActivityChannel(activityClient)
 
     init {
@@ -17,8 +17,13 @@ class ActivityRecognitionPlugin(val registrar: Registrar) {
 
     companion object {
         @JvmStatic
-        fun registerWith(registrar: Registrar): Unit {
+        fun registerWith(registrar: Registrar) {
             val plugin = ActivityRecognitionPlugin(registrar)
+            registrar.addViewDestroyListener(plugin)
         }
+    }
+
+    override fun onViewDestroy(nativeView: FlutterNativeView): Boolean {
+        return ActivityRecognizedService.setBackgroundFlutterView(nativeView)
     }
 }

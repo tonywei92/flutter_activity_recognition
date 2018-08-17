@@ -8,71 +8,40 @@ package at.resiverbindet.activityrecognition.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Context.MODE_PRIVATE
+import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Build
-import android.preference.PreferenceManager
 import android.util.Log
 import at.resiverbindet.activityrecognition.Constants
 import com.google.android.gms.location.ActivityRecognition
 
 
-class ActivityClient(private val activity: Activity) :
-        SharedPreferences.OnSharedPreferenceChangeListener {
+class ActivityClient(val context: Context) {
 
-    private val activityRecognitionClient = ActivityRecognition.getClient(activity)
-    private var activityUpdatesCallback: ((String) -> Unit)? = null
-
-    private var isPaused = true
+    private val activityRecognitionClient = ActivityRecognition.getClient(context)
 
     private val TAG = "ActivityClient"
 
-    fun resume() {
-        if (!isPaused) return
 
-        registerSharedPreferenceChangeListener()
-        requestActivityUpdates()
-
-        isPaused = false
+    fun setPeriodic(
+            requestCode: Int,
+            intervalMillis: Long = Constants.DETECTION_INTERVAL_IN_MILLISECONDS,
+            callbackHandle: Long) {
+        requestActivityUpdates(
+                requestCode,
+                intervalMillis,
+                callbackHandle)
     }
 
-    fun pause() {
-        if (isPaused) return
-
-        unregisterSharedPreferenceChangeListener()
-        removeActivityUpdates()
-
-        isPaused = true
-    }
-
-    fun registerActivityUpdateCallback(callback: (String) -> Unit) {
-        activityUpdatesCallback = callback
-    }
-
-    fun deregisterLocationUpdatesCallback() {
-        activityUpdatesCallback = null
-    }
-
-    private fun registerSharedPreferenceChangeListener() {
-        val preferences =
-                activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
-
-        preferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    private fun unregisterSharedPreferenceChangeListener() {
-        val preferences =
-                activity.applicationContext.getSharedPreferences("activity_recognition", MODE_PRIVATE)
-        preferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
 
     @SuppressLint("MissingPermission")
-    private fun requestActivityUpdates() {
+    private fun requestActivityUpdates(requestCode: Int,
+                                       intervalMillis: Long,
+                                       callbackHandle: Long) {
         Log.d(TAG, "requestActivityUpdates: start")
+        val pendingIntent = getActivityDetectionPendingIntent(callbackHandle)
         val task = activityRecognitionClient.requestActivityUpdates(
-                Constants.DETECTION_INTERVAL_IN_MILLISECONDS,
-                getActivityDetectionPendingIntent()
+                intervalMillis,
+                pendingIntent
         )
 
         task.addOnSuccessListener {
@@ -99,21 +68,12 @@ class ActivityClient(private val activity: Activity) :
         }
     }
 
-    private fun getActivityDetectionPendingIntent(): PendingIntent {
-        val intent = Intent(activity, ActivityRecognizedService::class.java)
-
+    private fun getActivityDetectionPendingIntent(callbackHandle: Long = 0): PendingIntent {
+        val intent = Intent(context, ActivityRecognizedService::class.java)
+        intent.putExtra("callbackHandle", callbackHandle);
 
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // requestActivityUpdates() and removeActivityUpdates().
-        return PendingIntent.getService(activity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == Constants.KEY_DETECTED_ACTIVITIES) {
-            val result = sharedPreferences
-                    .getString(Constants.KEY_DETECTED_ACTIVITIES, "")
-            activityUpdatesCallback?.invoke(result)
-        }
+        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

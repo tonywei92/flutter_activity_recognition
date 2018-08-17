@@ -1,7 +1,21 @@
+import 'dart:async';
+
 import 'package:activity_recognition/activity_recognition.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+Future main() async {
+  print("main: init");
+  await ActivityRecognition.initialize();
+
+  print("main: runApp");
+  runApp(new MyApp());
+
+  await Future.delayed(Duration(milliseconds: 500));
+
+  print("main: periodicWithStreamOutput");
+  await ActivityRecognition.periodicWithStreamOutput(
+      Duration(milliseconds: 500));
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -19,6 +33,7 @@ class _MyAppState extends State<MyApp> {
         body: new Center(
           child: StreamBuilder(
             builder: (context, snapshot) {
+              print("rebuild ui");
               if (snapshot.hasData) {
                 Activity act = snapshot.data;
                 return Text("Your phone is to ${act.confidence}% ${act.type}!");
@@ -26,7 +41,7 @@ class _MyAppState extends State<MyApp> {
 
               return Text("No activity detected.");
             },
-            stream: ActivityRecognition.activityUpdates(),
+            stream: ActivityRecognition.activityUpdates,
           ),
         ),
       ),
