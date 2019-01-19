@@ -1,3 +1,8 @@
+## 0.1.4
+
+* Upgrade Kotlin version
+* Update Example
+
 ## 0.1.3
 
 * Fix copy & paste bug
