@@ -1,4 +1,4 @@
-import 'package:activity_recognition/activity_recognition.dart';
+import 'package:activity_recognition_alt/activity_recognition_alt.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
 
               return Text("No activity detected.");
             },
-            stream: ActivityRecognition.activityUpdates(),
+            stream: ActivityRecognitionAlt.activityUpdates(),
           ),
         ),
       ),

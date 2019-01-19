@@ -3,7 +3,7 @@
  * Licensed under Apache License v2.0
  */
 
-part of activity_recognition;
+part of activity_recognition_alt;
 
 class _ActivityChannel {
   StreamController<Activity> _activityStreamController =

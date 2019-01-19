@@ -1,9 +1,9 @@
-name: activity_recognition
-description: Activity recognition plugin for Android and iOS using the native APIs
+name: activity_recognition_alt
+description: Activity recognition plugin for Android and iOS using the native APIs with updated Kotlin version to 1.2.51, forked from https://github.com/Morosko/flutter_activity_recognition
   - ActivityRecognitionClient on Android, CoreMotion on iOS.
 version: 0.1.3
-author: Daniel Morawetz <development@resi-verbindet.at>
-homepage: https://github.com/Morosko/flutter_activity_recognition
+author: Tony Wei <tonywei92@gmail.com>
+homepage: https://github.com/tonywei92/flutter_activity_recognition
 
 dependencies:
   flutter:
