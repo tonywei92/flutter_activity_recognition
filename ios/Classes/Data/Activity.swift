@@ -1,6 +1,6 @@
 //
 //  Activity.swift
-//  activity_recognition
+//  activity_recognition_alt
 //
 //  Created by Daniel Morawetz on 02.08.18.
 //

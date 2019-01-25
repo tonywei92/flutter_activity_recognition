@@ -1,6 +1,6 @@
 //
 //  ActivityClient.swift
-//  activity_recognition
+//  activity_recognition_alt
 //
 //  Created by Daniel Morawetz on 02.08.18.
 //
@@ -19,10 +19,10 @@ class ActivityChannel {
     }
     
     func register(on plugin: SwiftActivityRecognitionPlugin) {
-        let methodChannel = FlutterMethodChannel(name: "activity_recognition/activities", binaryMessenger: plugin.registrar.messenger())
+        let methodChannel = FlutterMethodChannel(name: "activity_recognition_alt/activities", binaryMessenger: plugin.registrar.messenger())
         methodChannel.setMethodCallHandler(handleMethodCall(_:result:))
         
-        let eventChannel = FlutterEventChannel(name: "activity_recognition/activityUpdates", binaryMessenger: plugin.registrar.messenger())
+        let eventChannel = FlutterEventChannel(name: "activity_recognition_alt/activityUpdates", binaryMessenger: plugin.registrar.messenger())
         eventChannel.setStreamHandler(activityUpdatesHandler)
     }
     

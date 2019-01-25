@@ -2,9 +2,9 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'activity_recognition'
+  s.name             = 'activity_recognition_alt'
   s.version          = '0.0.1'
-  s.summary          = 'Activity recogiontion plugin for Android and iOS'
+  s.summary          = 'Activity recognition plugin for Android and iOS'
   s.description      = <<-DESC
 Activity recogiontion plugin for Android and iOS
                        DESC
