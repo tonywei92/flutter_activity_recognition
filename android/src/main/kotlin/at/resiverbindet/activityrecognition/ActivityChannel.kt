@@ -10,8 +10,6 @@ import at.resiverbindet.activityrecognition.activity.ActivityClient
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 
 class ActivityChannel(private val activityClient: ActivityClient) :
         MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
